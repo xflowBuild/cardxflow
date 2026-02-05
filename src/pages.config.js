@@ -49,12 +49,14 @@
  */
 import Dashboard from './pages/Dashboard';
 import AdminTemplates from './pages/AdminTemplates';
+import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "Dashboard": Dashboard,
     "AdminTemplates": AdminTemplates,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {

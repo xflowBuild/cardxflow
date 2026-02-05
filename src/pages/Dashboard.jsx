@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Toaster, toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useAuth } from '@/lib/AuthContext';
+import { createPageUrl } from '@/lib/utils';
 
 import CardGrid from '../components/cards/CardGrid';
 import CardModal from '../components/cards/CardModal';
@@ -329,20 +330,20 @@ export default function Dashboard() {
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center">
                     <span className="text-sm font-medium text-white">
-                      {user.full_name?.[0] || user.email?.[0]?.toUpperCase()}
+                      {user.full_name?.[0] || user.phone?.[0] || 'מ'}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-white truncate">{user.full_name || 'משתמש'}</p>
-                    <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                    <p className="text-xs text-slate-400 truncate">{user.phone}</p>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={logout}
+                    onClick={() => window.location.href = createPageUrl('Settings')}
                     className="text-slate-400 hover:text-white"
                   >
-                    <LogOut className="w-4 h-4" />
+                    <Settings className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
