@@ -3,17 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from '@/api/supabaseClient';
 import { toast } from "sonner";
 
-// Make.com webhook URL - שנה לכתובת שלך
-const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/wa6uim31f98j5igxiv3u7ff66hdjadhr';
+// Supabase Edge Function URL - הכל מטופל בצד השרת
+const SEND_OTP_URL = 'https://kauxantpdqikmepjiddu.supabase.co/functions/v1/send-otp';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY';
 
 export default function PhoneAuth({ onAuthSuccess }) {
   const [step, setStep] = useState('phone'); // 'phone' | 'otp'
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
-  const [generatedOtp, setGeneratedOtp] = useState('');
   const [loading, setLoading] = useState(false);
 
   const formatPhoneNumber = (number) => {
@@ -25,10 +24,6 @@ export default function PhoneAuth({ onAuthSuccess }) {
       cleaned = '+' + cleaned;
     }
     return cleaned;
-  };
-
-  const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
   };
 
   const handleSendOTP = async (e) => {
@@ -43,19 +38,23 @@ export default function PhoneAuth({ onAuthSuccess }) {
 
     try {
       const formattedPhone = formatPhoneNumber(phone);
-      const otpCode = generateOTP();
 
-      // שלח ל-Make.com webhook
-      const webhookUrl = `${MAKE_WEBHOOK_URL}?phone=${encodeURIComponent(formattedPhone)}&otp=${encodeURIComponent(otpCode)}`;
+      // שלח בקשה ליצירת OTP בצד השרת - הקוד לא עובר דרך הדפדפן
+      const response = await fetch(SEND_OTP_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          phone: formattedPhone,
+        }),
+      });
 
-      // Script injection - עובד תמיד
-      const script = document.createElement('script');
-      script.src = webhookUrl;
-      document.body.appendChild(script);
-      setTimeout(() => script.remove(), 1000);
-
-      // שמור את הקוד לאימות מקומי
-      setGeneratedOtp(otpCode);
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to send OTP');
+      }
 
       toast.success('קוד אימות נשלח!');
       setStep('otp');
@@ -78,45 +77,41 @@ export default function PhoneAuth({ onAuthSuccess }) {
     setLoading(true);
 
     try {
-      // בדוק אם הקוד נכון
-      if (otp !== generatedOtp) {
-        toast.error('קוד אימות שגוי');
+      const formattedPhone = formatPhoneNumber(phone);
+
+      // אימות OTP בצד השרת - השרת בודק את הקוד ומחזיר את המשתמש
+      const response = await fetch(SEND_OTP_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          phone: formattedPhone,
+          action: 'verify',
+          userOtp: otp,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        if (result.error === 'OTP expired') {
+          toast.error('קוד האימות פג תוקף, נסה שוב');
+        } else if (result.error === 'Invalid OTP') {
+          toast.error('קוד אימות שגוי');
+        } else {
+          toast.error('שגיאה באימות');
+        }
         setLoading(false);
         return;
       }
 
-      const formattedPhone = formatPhoneNumber(phone);
-
-      // בדוק אם המשתמש קיים בטבלה שלנו
-      const { data: existingUser, error: fetchError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('phone', formattedPhone)
-        .single();
-
-      let user;
-
-      if (fetchError && fetchError.code === 'PGRST116') {
-        // משתמש לא קיים - צור אותו
-        const { data: newUser, error: createError } = await supabase
-          .from('users')
-          .insert([{ phone: formattedPhone }])
-          .select()
-          .single();
-
-        if (createError) throw createError;
-        user = newUser;
-      } else if (fetchError) {
-        throw fetchError;
-      } else {
-        user = existingUser;
-      }
-
       // שמור את המשתמש ב-localStorage
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(result.user));
 
       toast.success('התחברת בהצלחה!');
-      onAuthSuccess?.(user);
+      onAuthSuccess?.(result.user);
 
       // רענן את הדף
       window.location.reload();

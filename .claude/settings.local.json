@@ -8,7 +8,14 @@
       "Bash(npm install:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(vercel --version:*)",
+      "Bash(vercel login:*)",
+      "Bash(vercel:*)",
+      "Bash(npx supabase functions new:*)",
+      "Bash(npx supabase link --project-ref kauxantpdqikmepjiddu)",
+      "Bash(npx supabase login)",
+      "Bash(SUPABASE_ACCESS_TOKEN=sbp_355ca191c481de47a776571f60248eafac236b33 npx supabase:*)"
     ]
   }
 }
