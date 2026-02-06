@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Toaster, toast } from "sonner";
 import { useAuth } from '@/lib/AuthContext';
-import { createPageUrl } from '@/lib/utils';
+import { createPageUrl } from '@/utils';
 
 export default function Settings() {
   const { user: authUser, logout } = useAuth();

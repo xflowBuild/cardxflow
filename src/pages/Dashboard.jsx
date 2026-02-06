@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Toaster, toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useAuth } from '@/lib/AuthContext';
-import { createPageUrl } from '@/lib/utils';
+import { createPageUrl } from '@/utils';
 
 import CardGrid from '../components/cards/CardGrid';
 import CardModal from '../components/cards/CardModal';
