@@ -320,213 +320,205 @@ export default function Settings() {
 
               {/* API Documentation */}
               <div className="mt-6 pt-6 border-t border-slate-700" dir="ltr">
-                <h3 className="text-sm font-medium text-white mb-4 text-right" dir="rtl">תיעוד API - דוגמאות מוכנות לשימוש</h3>
+                <h3 className="text-lg font-semibold text-white mb-6 text-right" dir="rtl">API Documentation</h3>
 
-                <div className="space-y-4 text-sm text-left">
-                  {/* Base URL */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2 font-medium">Base URL</div>
-                    <code className="text-amber-400 font-mono text-xs block">
-                      https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api
-                    </code>
-                  </div>
+                <div className="space-y-6 text-sm text-left">
 
-                  {/* Anon Key */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2 font-medium">Anon Key (for Authorization header)</div>
-                    <code className="text-amber-400 font-mono text-xs block break-all">
-                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY
-                    </code>
-                  </div>
+                  {/* Section 1: Authentication */}
+                  <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-5 border border-slate-700">
+                    <h4 className="text-amber-400 font-semibold mb-4 flex items-center gap-2">
+                      <Key className="w-4 h-4" />
+                      Authentication
+                    </h4>
 
-                  {/* Ready to use examples */}
-                  <div className="text-slate-300 font-medium text-right" dir="rtl">דוגמאות מוכנות להעתקה:</div>
-
-                  {/* List Cards */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-mono">GET</span>
-                        <span className="text-slate-300 font-medium">List all cards</span>
+                    <div className="space-y-4">
+                      {/* Endpoint */}
+                      <div>
+                        <div className="text-slate-500 text-xs mb-1">ENDPOINT</div>
+                        <div className="flex items-center justify-between bg-black/40 rounded-lg px-3 py-2">
+                          <code className="text-emerald-400 font-mono text-xs">
+                            https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 text-slate-400 hover:text-white"
+                            onClick={() => {
+                              navigator.clipboard.writeText('https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api');
+                              toast.success('Endpoint copied!');
+                            }}
+                          >
+                            <Copy className="w-3 h-3" />
+                          </Button>
+                        </div>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-400 hover:text-white h-7 text-xs"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"list","table":"cards","sessionToken":"${sessionToken}","sortBy":"-created_date"}'`);
-                          toast.success('הועתק!');
-                        }}
-                      >
-                        <Copy className="w-3 h-3 mr-1" /> Copy
-                      </Button>
-                    </div>
-                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
-{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"list","table":"cards","sessionToken":"${sessionToken}","sortBy":"-created_date"}'`}
-                    </pre>
-                  </div>
 
-                  {/* Create Card */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-mono">POST</span>
-                        <span className="text-slate-300 font-medium">Create new card</span>
+                      {/* Anon Key */}
+                      <div>
+                        <div className="text-slate-500 text-xs mb-1">ANON KEY</div>
+                        <div className="flex items-center justify-between bg-black/40 rounded-lg px-3 py-2">
+                          <code className="text-amber-400 font-mono text-xs truncate max-w-[280px]">
+                            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...SEsY
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 text-slate-400 hover:text-white"
+                            onClick={() => {
+                              navigator.clipboard.writeText('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY');
+                              toast.success('Anon Key copied!');
+                            }}
+                          >
+                            <Copy className="w-3 h-3" />
+                          </Button>
+                        </div>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-400 hover:text-white h-7 text-xs"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"create","table":"cards","sessionToken":"${sessionToken}","data":{"title":"New Card","color":"#8B5CF6","tags":[],"content_blocks":[],"is_favorite":false}}'`);
-                          toast.success('הועתק!');
-                        }}
-                      >
-                        <Copy className="w-3 h-3 mr-1" /> Copy
-                      </Button>
-                    </div>
-                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
-{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"create","table":"cards","sessionToken":"${sessionToken}","data":{"title":"New Card","color":"#8B5CF6","tags":[],"content_blocks":[],"is_favorite":false}}'`}
-                    </pre>
-                  </div>
 
-                  {/* Update Card */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-mono">PUT</span>
-                        <span className="text-slate-300 font-medium">Update card</span>
+                      {/* Session Token */}
+                      <div>
+                        <div className="text-slate-500 text-xs mb-1">YOUR SESSION TOKEN</div>
+                        <div className="flex items-center justify-between bg-black/40 rounded-lg px-3 py-2">
+                          <code className="text-violet-400 font-mono text-xs truncate max-w-[280px]">
+                            {sessionToken ? sessionToken.substring(0, 40) + '...' : 'Not logged in'}
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 text-slate-400 hover:text-white"
+                            onClick={() => {
+                              navigator.clipboard.writeText(sessionToken || '');
+                              toast.success('Session Token copied!');
+                            }}
+                          >
+                            <Copy className="w-3 h-3" />
+                          </Button>
+                        </div>
+                        <div className="text-slate-500 text-xs mt-1">Expires: 24 hours from login</div>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-400 hover:text-white h-7 text-xs"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"update","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>","data":{"title":"Updated Title"}}'`);
-                          toast.success('הועתק!');
-                        }}
-                      >
-                        <Copy className="w-3 h-3 mr-1" /> Copy
-                      </Button>
                     </div>
-                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
-{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"update","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>","data":{"title":"Updated Title"}}'`}
-                    </pre>
                   </div>
 
-                  {/* Delete Card */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-mono">DELETE</span>
-                        <span className="text-slate-300 font-medium">Delete card</span>
+                  {/* Section 2: Available Actions */}
+                  <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-700">
+                    <h4 className="text-blue-400 font-semibold mb-4">Available Actions</h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b border-slate-700">
+                            <th className="text-left py-2 text-slate-400 font-medium">Action</th>
+                            <th className="text-left py-2 text-slate-400 font-medium">Description</th>
+                            <th className="text-left py-2 text-slate-400 font-medium">Required Params</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-slate-300">
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-emerald-400">list</code></td>
+                            <td className="py-2">Get all items</td>
+                            <td className="py-2 text-slate-500">table, sessionToken</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-emerald-400">get</code></td>
+                            <td className="py-2">Get single item</td>
+                            <td className="py-2 text-slate-500">table, sessionToken, id</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-emerald-400">create</code></td>
+                            <td className="py-2">Create new item</td>
+                            <td className="py-2 text-slate-500">table, sessionToken, data</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-emerald-400">update</code></td>
+                            <td className="py-2">Update existing item</td>
+                            <td className="py-2 text-slate-500">table, sessionToken, id, data</td>
+                          </tr>
+                          <tr>
+                            <td className="py-2"><code className="text-emerald-400">delete</code></td>
+                            <td className="py-2">Delete item</td>
+                            <td className="py-2 text-slate-500">table, sessionToken, id</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Section 3: Request Format */}
+                  <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-700">
+                    <h4 className="text-purple-400 font-semibold mb-4">Request Format</h4>
+                    <div className="space-y-3">
+                      <div className="text-slate-400 text-xs">All requests use <code className="text-white bg-slate-700 px-1 rounded">POST</code> method</div>
+
+                      <div>
+                        <div className="text-slate-500 text-xs mb-2">HEADERS</div>
+                        <pre className="bg-black/40 rounded-lg p-3 text-xs font-mono overflow-x-auto">
+{`Content-Type: application/json
+Authorization: Bearer <ANON_KEY>`}
+                        </pre>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-400 hover:text-white h-7 text-xs"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"delete","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>"}'`);
-                          toast.success('הועתק!');
-                        }}
-                      >
-                        <Copy className="w-3 h-3 mr-1" /> Copy
-                      </Button>
-                    </div>
-                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
-{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"delete","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>"}'`}
-                    </pre>
-                  </div>
 
-                  {/* List Folders */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs font-mono">GET</span>
-                        <span className="text-slate-300 font-medium">List folders</span>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-400 hover:text-white h-7 text-xs"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"list","table":"folders","sessionToken":"${sessionToken}"}'`);
-                          toast.success('הועתק!');
-                        }}
-                      >
-                        <Copy className="w-3 h-3 mr-1" /> Copy
-                      </Button>
-                    </div>
-                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
-{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
-  -d '{"action":"list","table":"folders","sessionToken":"${sessionToken}"}'`}
-                    </pre>
-                  </div>
-
-                  {/* Card Schema */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2 font-medium">Card Schema</div>
-                    <pre className="text-pink-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
+                      <div>
+                        <div className="text-slate-500 text-xs mb-2">BODY STRUCTURE</div>
+                        <pre className="bg-black/40 rounded-lg p-3 text-xs font-mono overflow-x-auto text-cyan-400">
 {`{
-  "id": "uuid",
-  "title": "string",
-  "color": "#hex",
-  "folder_id": "uuid | null",
-  "tags": ["string"],
-  "content_blocks": [
-    { "type": "text", "content": "..." },
-    { "type": "api", "templateId": "uuid", "params": {} }
-  ],
-  "is_smart_card": boolean,
-  "is_favorite": boolean,
-  "created_date": "timestamp",
-  "updated_date": "timestamp"
+  "action": "list | get | create | update | delete",
+  "table": "cards | folders",
+  "sessionToken": "<YOUR_SESSION_TOKEN>",
+  "id": "<uuid>",           // for get, update, delete
+  "data": { ... },          // for create, update
+  "sortBy": "-created_date" // optional, for list
 }`}
-                    </pre>
+                        </pre>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* JavaScript Example */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-mono">JS</span>
-                        <span className="text-slate-300 font-medium">JavaScript / Node.js Example</span>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-400 hover:text-white h-7 text-xs"
-                        onClick={() => {
-                          navigator.clipboard.writeText(`const response = await fetch("https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api", {
+                  {/* Section 4: Examples */}
+                  <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-700">
+                    <h4 className="text-green-400 font-semibold mb-4">Examples</h4>
+
+                    <div className="space-y-4">
+                      {/* List Cards Example */}
+                      <div className="border border-slate-700 rounded-lg overflow-hidden">
+                        <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-bold">LIST</span>
+                            <span className="text-slate-300 text-xs">Get all cards</span>
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <pre className="bg-black/40 rounded-lg p-3 text-xs font-mono text-emerald-400 overflow-x-auto">
+{`{
+  "action": "list",
+  "table": "cards",
+  "sessionToken": "${sessionToken ? sessionToken.substring(0, 20) + '...' : '<token>'}",
+  "sortBy": "-created_date"
+}`}
+                          </pre>
+                          <div className="flex gap-2 flex-wrap">
+                            <Button size="sm" variant="outline" className="h-7 text-xs border-slate-600"
+                              onClick={() => {
+                                navigator.clipboard.writeText(JSON.stringify({
+                                  action: "list",
+                                  table: "cards",
+                                  sessionToken: sessionToken,
+                                  sortBy: "-created_date"
+                                }, null, 2));
+                                toast.success('Body copied!');
+                              }}>
+                              <Copy className="w-3 h-3 mr-1" /> Body
+                            </Button>
+                            <Button size="sm" variant="outline" className="h-7 text-xs border-slate-600"
+                              onClick={() => {
+                                navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '${JSON.stringify({action:"list",table:"cards",sessionToken:sessionToken,sortBy:"-created_date"})}'`);
+                                toast.success('cURL copied!');
+                              }}>
+                              <Copy className="w-3 h-3 mr-1" /> cURL
+                            </Button>
+                            <Button size="sm" variant="outline" className="h-7 text-xs border-slate-600"
+                              onClick={() => {
+                                navigator.clipboard.writeText(`const response = await fetch("https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -539,34 +531,201 @@ export default function Settings() {
     sortBy: "-created_date"
   })
 });
+const data = await response.json();`);
+                                toast.success('JavaScript copied!');
+                              }}>
+                              <Copy className="w-3 h-3 mr-1" /> JavaScript
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
 
-const cards = await response.json();
-console.log(cards);`);
-                          toast.success('הועתק!');
-                        }}
-                      >
-                        <Copy className="w-3 h-3 mr-1" /> Copy
-                      </Button>
+                      {/* Create Card Example */}
+                      <div className="border border-slate-700 rounded-lg overflow-hidden">
+                        <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">CREATE</span>
+                            <span className="text-slate-300 text-xs">Create new card</span>
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <pre className="bg-black/40 rounded-lg p-3 text-xs font-mono text-emerald-400 overflow-x-auto">
+{`{
+  "action": "create",
+  "table": "cards",
+  "sessionToken": "<token>",
+  "data": {
+    "title": "My New Card",
+    "color": "#8B5CF6",
+    "tags": ["work", "important"],
+    "is_favorite": false
+  }
+}`}
+                          </pre>
+                          <div className="flex gap-2 flex-wrap">
+                            <Button size="sm" variant="outline" className="h-7 text-xs border-slate-600"
+                              onClick={() => {
+                                navigator.clipboard.writeText(JSON.stringify({
+                                  action: "create",
+                                  table: "cards",
+                                  sessionToken: sessionToken,
+                                  data: {
+                                    title: "My New Card",
+                                    color: "#8B5CF6",
+                                    tags: ["work", "important"],
+                                    is_favorite: false
+                                  }
+                                }, null, 2));
+                                toast.success('Body copied!');
+                              }}>
+                              <Copy className="w-3 h-3 mr-1" /> Body
+                            </Button>
+                            <Button size="sm" variant="outline" className="h-7 text-xs border-slate-600"
+                              onClick={() => {
+                                navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '${JSON.stringify({action:"create",table:"cards",sessionToken:sessionToken,data:{title:"My New Card",color:"#8B5CF6",tags:["work","important"],is_favorite:false}})}'`);
+                                toast.success('cURL copied!');
+                              }}>
+                              <Copy className="w-3 h-3 mr-1" /> cURL
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Update Card Example */}
+                      <div className="border border-slate-700 rounded-lg overflow-hidden">
+                        <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-bold">UPDATE</span>
+                            <span className="text-slate-300 text-xs">Update existing card</span>
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <pre className="bg-black/40 rounded-lg p-3 text-xs font-mono text-emerald-400 overflow-x-auto">
+{`{
+  "action": "update",
+  "table": "cards",
+  "sessionToken": "<token>",
+  "id": "<card_uuid>",
+  "data": {
+    "title": "Updated Title"
+  }
+}`}
+                          </pre>
+                          <div className="flex gap-2 flex-wrap">
+                            <Button size="sm" variant="outline" className="h-7 text-xs border-slate-600"
+                              onClick={() => {
+                                navigator.clipboard.writeText(JSON.stringify({
+                                  action: "update",
+                                  table: "cards",
+                                  sessionToken: sessionToken,
+                                  id: "<card_uuid>",
+                                  data: { title: "Updated Title" }
+                                }, null, 2));
+                                toast.success('Body copied!');
+                              }}>
+                              <Copy className="w-3 h-3 mr-1" /> Body
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Delete Card Example */}
+                      <div className="border border-slate-700 rounded-lg overflow-hidden">
+                        <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-bold">DELETE</span>
+                            <span className="text-slate-300 text-xs">Delete card</span>
+                          </div>
+                        </div>
+                        <div className="p-4 space-y-3">
+                          <pre className="bg-black/40 rounded-lg p-3 text-xs font-mono text-emerald-400 overflow-x-auto">
+{`{
+  "action": "delete",
+  "table": "cards",
+  "sessionToken": "<token>",
+  "id": "<card_uuid>"
+}`}
+                          </pre>
+                          <div className="flex gap-2 flex-wrap">
+                            <Button size="sm" variant="outline" className="h-7 text-xs border-slate-600"
+                              onClick={() => {
+                                navigator.clipboard.writeText(JSON.stringify({
+                                  action: "delete",
+                                  table: "cards",
+                                  sessionToken: sessionToken,
+                                  id: "<card_uuid>"
+                                }, null, 2));
+                                toast.success('Body copied!');
+                              }}>
+                              <Copy className="w-3 h-3 mr-1" /> Body
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <pre className="text-cyan-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
-{`const response = await fetch("https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-  },
-  body: JSON.stringify({
-    action: "list",
-    table: "cards",
-    sessionToken: "${sessionToken ? sessionToken.substring(0, 30) + '...' : '<YOUR_TOKEN>'}",
-    sortBy: "-created_date"
-  })
-});
-
-const cards = await response.json();
-console.log(cards);`}
-                    </pre>
                   </div>
+
+                  {/* Section 5: Card Schema */}
+                  <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-700">
+                    <h4 className="text-pink-400 font-semibold mb-4">Card Schema</h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b border-slate-700">
+                            <th className="text-left py-2 text-slate-400 font-medium">Field</th>
+                            <th className="text-left py-2 text-slate-400 font-medium">Type</th>
+                            <th className="text-left py-2 text-slate-400 font-medium">Description</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-slate-300">
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-amber-400">id</code></td>
+                            <td className="py-2 text-slate-500">uuid</td>
+                            <td className="py-2">Unique identifier</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-amber-400">title</code></td>
+                            <td className="py-2 text-slate-500">string</td>
+                            <td className="py-2">Card title</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-amber-400">color</code></td>
+                            <td className="py-2 text-slate-500">hex string</td>
+                            <td className="py-2">Card color (#RRGGBB)</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-amber-400">folder_id</code></td>
+                            <td className="py-2 text-slate-500">uuid | null</td>
+                            <td className="py-2">Parent folder</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-amber-400">tags</code></td>
+                            <td className="py-2 text-slate-500">string[]</td>
+                            <td className="py-2">Tags array</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-amber-400">content_blocks</code></td>
+                            <td className="py-2 text-slate-500">object[]</td>
+                            <td className="py-2">Content blocks</td>
+                          </tr>
+                          <tr className="border-b border-slate-800">
+                            <td className="py-2"><code className="text-amber-400">is_favorite</code></td>
+                            <td className="py-2 text-slate-500">boolean</td>
+                            <td className="py-2">Favorite status</td>
+                          </tr>
+                          <tr>
+                            <td className="py-2"><code className="text-amber-400">created_date</code></td>
+                            <td className="py-2 text-slate-500">timestamp</td>
+                            <td className="py-2">Creation date</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
