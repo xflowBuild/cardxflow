@@ -474,13 +474,14 @@ Authorization: Bearer <ANON_KEY>`}
                   {/* Section 4: Examples */}
                   <div className="bg-slate-900/50 rounded-xl p-5 border border-slate-700">
                     <h4 className="text-green-400 font-semibold mb-4">Examples</h4>
+                    <p className="text-slate-400 text-xs mb-4">All requests are <code className="bg-slate-700 px-1 rounded text-white">POST</code> to the endpoint above</p>
 
                     <div className="space-y-4">
                       {/* List Cards Example */}
                       <div className="border border-slate-700 rounded-lg overflow-hidden">
                         <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-bold">LIST</span>
+                            <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-bold">action: list</span>
                             <span className="text-slate-300 text-xs">Get all cards</span>
                           </div>
                         </div>
@@ -544,7 +545,7 @@ const data = await response.json();`);
                       <div className="border border-slate-700 rounded-lg overflow-hidden">
                         <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">CREATE</span>
+                            <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">action: create</span>
                             <span className="text-slate-300 text-xs">Create new card</span>
                           </div>
                         </div>
@@ -598,7 +599,7 @@ const data = await response.json();`);
                       <div className="border border-slate-700 rounded-lg overflow-hidden">
                         <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-bold">UPDATE</span>
+                            <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-bold">action: update</span>
                             <span className="text-slate-300 text-xs">Update existing card</span>
                           </div>
                         </div>
@@ -636,7 +637,7 @@ const data = await response.json();`);
                       <div className="border border-slate-700 rounded-lg overflow-hidden">
                         <div className="bg-slate-800 px-4 py-2 flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-bold">DELETE</span>
+                            <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-bold">action: delete</span>
                             <span className="text-slate-300 text-xs">Delete card</span>
                           </div>
                         </div>
