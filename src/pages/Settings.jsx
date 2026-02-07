@@ -23,7 +23,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Toaster, toast } from "sonner";
 import { useAuth } from '@/lib/AuthContext';
-import { createPageUrl } from '@/utils';
 
 export default function Settings() {
   const { user: authUser, logout } = useAuth();
@@ -168,7 +167,7 @@ export default function Settings() {
   // Handle logout
   const handleLogout = () => {
     logout();
-    window.location.href = createPageUrl('Dashboard');
+    window.location.href = '/Dashboard';
   };
 
   if (profileFetching) {
@@ -189,7 +188,7 @@ export default function Settings() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => window.location.href = createPageUrl('Dashboard')}
+            onClick={() => window.location.href = '/Dashboard'}
             className="text-slate-400 hover:text-white"
           >
             <ArrowRight className="w-5 h-5" />
@@ -320,107 +319,183 @@ export default function Settings() {
               </div>
 
               {/* API Documentation */}
-              <div className="mt-6 pt-6 border-t border-slate-700">
-                <h3 className="text-sm font-medium text-white mb-4">תיעוד API</h3>
+              <div className="mt-6 pt-6 border-t border-slate-700" dir="ltr">
+                <h3 className="text-sm font-medium text-white mb-4 text-right" dir="rtl">תיעוד API - דוגמאות מוכנות לשימוש</h3>
 
-                <div className="space-y-4 text-sm">
+                <div className="space-y-4 text-sm text-left">
                   {/* Base URL */}
                   <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2">Base URL</div>
-                    <code className="text-amber-400 font-mono text-xs break-all">
+                    <div className="text-slate-400 mb-2 font-medium">Base URL</div>
+                    <code className="text-amber-400 font-mono text-xs block">
                       https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api
                     </code>
                   </div>
 
-                  {/* Headers */}
+                  {/* Anon Key */}
                   <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2">Headers נדרשים</div>
-                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto">
-{`Content-Type: application/json
-Authorization: Bearer <ANON_KEY>`}
-                    </pre>
+                    <div className="text-slate-400 mb-2 font-medium">Anon Key (for Authorization header)</div>
+                    <code className="text-amber-400 font-mono text-xs block break-all">
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY
+                    </code>
                   </div>
 
-                  {/* Request Body */}
+                  {/* Ready to use examples */}
+                  <div className="text-slate-300 font-medium text-right" dir="rtl">דוגמאות מוכנות להעתקה:</div>
+
+                  {/* List Cards */}
                   <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2">Body (JSON)</div>
-                    <pre className="text-cyan-400 font-mono text-xs overflow-x-auto">
-{`{
-  "action": "list" | "get" | "create" | "update" | "delete",
-  "table": "cards" | "folders" | "tags",
-  "sessionToken": "<YOUR_SESSION_TOKEN>",
-  "id": "uuid",        // for get, update, delete
-  "data": { ... },     // for create, update
-  "sortBy": "-created_date"  // for list (optional)
-}`}
-                    </pre>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="space-y-3">
-                    <div className="text-slate-300 font-medium">פעולות זמינות:</div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-mono">list</span>
-                        <span className="text-slate-300">קבלת כל הפריטים</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-mono">GET</span>
+                        <span className="text-slate-300 font-medium">List all cards</span>
                       </div>
-                      <pre className="text-slate-500 font-mono text-xs">
-{`{ "action": "list", "table": "cards", "sessionToken": "...", "sortBy": "-created_date" }`}
-                      </pre>
-                    </div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-mono">create</span>
-                        <span className="text-slate-300">יצירת פריט חדש</span>
-                      </div>
-                      <pre className="text-slate-500 font-mono text-xs">
-{`{ "action": "create", "table": "cards", "sessionToken": "...", "data": { "title": "כרטיסייה חדשה" } }`}
-                      </pre>
-                    </div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-mono">update</span>
-                        <span className="text-slate-300">עדכון פריט קיים</span>
-                      </div>
-                      <pre className="text-slate-500 font-mono text-xs">
-{`{ "action": "update", "table": "cards", "sessionToken": "...", "id": "uuid", "data": { "title": "שם חדש" } }`}
-                      </pre>
-                    </div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-mono">delete</span>
-                        <span className="text-slate-300">מחיקת פריט</span>
-                      </div>
-                      <pre className="text-slate-500 font-mono text-xs">
-{`{ "action": "delete", "table": "cards", "sessionToken": "...", "id": "uuid" }`}
-                      </pre>
-                    </div>
-                  </div>
-
-                  {/* Example with cURL */}
-                  <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2">דוגמה עם cURL</div>
-                    <pre className="text-violet-400 font-mono text-xs overflow-x-auto whitespace-pre-wrap">
-{`curl -X POST \\
-  https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api \\
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:text-white h-7 text-xs"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
   -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \\
-  -d '{
-    "action": "list",
-    "table": "cards",
-    "sessionToken": "${sessionToken?.substring(0, 20)}..."
-  }'`}
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"list","table":"cards","sessionToken":"${sessionToken}","sortBy":"-created_date"}'`);
+                          toast.success('הועתק!');
+                        }}
+                      >
+                        <Copy className="w-3 h-3 mr-1" /> Copy
+                      </Button>
+                    </div>
+                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
+{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"list","table":"cards","sessionToken":"${sessionToken}","sortBy":"-created_date"}'`}
+                    </pre>
+                  </div>
+
+                  {/* Create Card */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-mono">POST</span>
+                        <span className="text-slate-300 font-medium">Create new card</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:text-white h-7 text-xs"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"create","table":"cards","sessionToken":"${sessionToken}","data":{"title":"New Card","color":"#8B5CF6","tags":[],"content_blocks":[],"is_favorite":false}}'`);
+                          toast.success('הועתק!');
+                        }}
+                      >
+                        <Copy className="w-3 h-3 mr-1" /> Copy
+                      </Button>
+                    </div>
+                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
+{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"create","table":"cards","sessionToken":"${sessionToken}","data":{"title":"New Card","color":"#8B5CF6","tags":[],"content_blocks":[],"is_favorite":false}}'`}
+                    </pre>
+                  </div>
+
+                  {/* Update Card */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-mono">PUT</span>
+                        <span className="text-slate-300 font-medium">Update card</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:text-white h-7 text-xs"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"update","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>","data":{"title":"Updated Title"}}'`);
+                          toast.success('הועתק!');
+                        }}
+                      >
+                        <Copy className="w-3 h-3 mr-1" /> Copy
+                      </Button>
+                    </div>
+                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
+{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"update","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>","data":{"title":"Updated Title"}}'`}
+                    </pre>
+                  </div>
+
+                  {/* Delete Card */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-mono">DELETE</span>
+                        <span className="text-slate-300 font-medium">Delete card</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:text-white h-7 text-xs"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"delete","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>"}'`);
+                          toast.success('הועתק!');
+                        }}
+                      >
+                        <Copy className="w-3 h-3 mr-1" /> Copy
+                      </Button>
+                    </div>
+                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
+{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"delete","table":"cards","sessionToken":"${sessionToken}","id":"<CARD_ID>"}'`}
+                    </pre>
+                  </div>
+
+                  {/* List Folders */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs font-mono">GET</span>
+                        <span className="text-slate-300 font-medium">List folders</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:text-white h-7 text-xs"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"list","table":"folders","sessionToken":"${sessionToken}"}'`);
+                          toast.success('הועתק!');
+                        }}
+                      >
+                        <Copy className="w-3 h-3 mr-1" /> Copy
+                      </Button>
+                    </div>
+                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
+{`curl -X POST "https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY" \\
+  -d '{"action":"list","table":"folders","sessionToken":"${sessionToken}"}'`}
                     </pre>
                   </div>
 
                   {/* Card Schema */}
                   <div className="bg-slate-900/50 rounded-lg p-4">
-                    <div className="text-slate-400 mb-2">מבנה כרטיסייה (Card)</div>
-                    <pre className="text-pink-400 font-mono text-xs overflow-x-auto">
+                    <div className="text-slate-400 mb-2 font-medium">Card Schema</div>
+                    <pre className="text-pink-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
 {`{
   "id": "uuid",
   "title": "string",
@@ -436,6 +511,60 @@ Authorization: Bearer <ANON_KEY>`}
   "created_date": "timestamp",
   "updated_date": "timestamp"
 }`}
+                    </pre>
+                  </div>
+
+                  {/* JavaScript Example */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-mono">JS</span>
+                        <span className="text-slate-300 font-medium">JavaScript / Node.js Example</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:text-white h-7 text-xs"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`const response = await fetch("https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdXhhbnRwZHFpa21lcGppZGR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwOTg5MzksImV4cCI6MjA4NTY3NDkzOX0.ILq9kMFOGY3RjRHAZfoPdRFCr8PPo6UlXrbdci9SEsY"
+  },
+  body: JSON.stringify({
+    action: "list",
+    table: "cards",
+    sessionToken: "${sessionToken}",
+    sortBy: "-created_date"
+  })
+});
+
+const cards = await response.json();
+console.log(cards);`);
+                          toast.success('הועתק!');
+                        }}
+                      >
+                        <Copy className="w-3 h-3 mr-1" /> Copy
+                      </Button>
+                    </div>
+                    <pre className="text-cyan-400 font-mono text-xs overflow-x-auto whitespace-pre bg-black/30 p-3 rounded">
+{`const response = await fetch("https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  body: JSON.stringify({
+    action: "list",
+    table: "cards",
+    sessionToken: "${sessionToken ? sessionToken.substring(0, 30) + '...' : '<YOUR_TOKEN>'}",
+    sortBy: "-created_date"
+  })
+});
+
+const cards = await response.json();
+console.log(cards);`}
                     </pre>
                   </div>
                 </div>
