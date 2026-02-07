@@ -17,7 +17,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
-import { base44 } from '@/api/base44Client';
 
 export default function SmartCardPanel({ card, templates, onUpdate }) {
   const [isRunning, setIsRunning] = useState(false);

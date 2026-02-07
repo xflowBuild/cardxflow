@@ -1,39 +1,35 @@
-**Welcome to your Base44 project** 
+# XFlow Cards
 
-**About**
+אפליקציית ניהול כרטיסים עם אימות SMS OTP מאובטח.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+## טכנולוגיות
 
-This project contains everything you need to run your app locally.
+- **Frontend**: React + Vite + TailwindCSS
+- **Backend**: Supabase (PostgreSQL + Edge Functions)
+- **SMS**: Make.com Webhook
+- **Deployment**: Vercel
 
-**Edit the code in your local development environment**
+## התקנה מקומית
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
-
-**Prerequisites:** 
-
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
-
-```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
-
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
+```bash
+npm install
+npm run dev
 ```
 
-Run the app: `npm run dev`
+## פריסה
 
-**Publish your changes**
+האפליקציה מתארחת ב-Vercel:
+https://base44-test-liard.vercel.app
 
-Open [Base44.com](http://Base44.com) and click on Publish.
+## מבנה הפרויקט
 
-**Docs & Support**
+```
+src/
+├── api/          # Supabase client
+├── components/   # React components
+├── pages/        # Page components
+└── lib/          # Utilities
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
-
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+supabase/
+└── functions/    # Edge Functions (OTP)
+```

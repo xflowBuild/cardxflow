@@ -15,7 +15,24 @@
       "Bash(npx supabase functions new:*)",
       "Bash(npx supabase link --project-ref kauxantpdqikmepjiddu)",
       "Bash(npx supabase login)",
-      "Bash(SUPABASE_ACCESS_TOKEN=sbp_355ca191c481de47a776571f60248eafac236b33 npx supabase:*)"
+      "Bash(SUPABASE_ACCESS_TOKEN=sbp_355ca191c481de47a776571f60248eafac236b33 npx supabase:*)",
+      "Bash(git push)",
+      "Bash(gh repo create:*)",
+      "Bash(npx vercel:*)",
+      "Bash(npx supabase secrets:*)",
+      "Bash(npm run build:*)",
+      "mcp__filesystem__list_allowed_directories",
+      "Bash(npx supabase functions deploy:*)",
+      "Bash(git push:*)",
+      "Bash(for i in 1 2 3)",
+      "Bash(do echo \"Attempt $i...\")",
+      "Bash(break)",
+      "Bash(done)",
+      "Bash(gh auth:*)",
+      "Bash(where:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(npx supabase functions list:*)",
+      "WebFetch(domain:xflow-cards.vercel.app)"
     ]
   }
 }

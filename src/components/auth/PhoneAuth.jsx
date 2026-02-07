@@ -107,8 +107,9 @@ export default function PhoneAuth({ onAuthSuccess }) {
         return;
       }
 
-      // שמור את המשתמש ב-localStorage
+      // שמור את המשתמש ואת ה-sessionToken ב-localStorage
       localStorage.setItem('user', JSON.stringify(result.user));
+      localStorage.setItem('sessionToken', result.sessionToken);
 
       toast.success('התחברת בהצלחה!');
       onAuthSuccess?.(result.user);
