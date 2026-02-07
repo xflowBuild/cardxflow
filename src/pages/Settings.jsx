@@ -318,6 +318,128 @@ export default function Settings() {
                 </div>
                 <p className="text-xs text-slate-500">תוקף: 24 שעות מרגע ההתחברות</p>
               </div>
+
+              {/* API Documentation */}
+              <div className="mt-6 pt-6 border-t border-slate-700">
+                <h3 className="text-sm font-medium text-white mb-4">תיעוד API</h3>
+
+                <div className="space-y-4 text-sm">
+                  {/* Base URL */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="text-slate-400 mb-2">Base URL</div>
+                    <code className="text-amber-400 font-mono text-xs break-all">
+                      https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api
+                    </code>
+                  </div>
+
+                  {/* Headers */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="text-slate-400 mb-2">Headers נדרשים</div>
+                    <pre className="text-emerald-400 font-mono text-xs overflow-x-auto">
+{`Content-Type: application/json
+Authorization: Bearer <ANON_KEY>`}
+                    </pre>
+                  </div>
+
+                  {/* Request Body */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="text-slate-400 mb-2">Body (JSON)</div>
+                    <pre className="text-cyan-400 font-mono text-xs overflow-x-auto">
+{`{
+  "action": "list" | "get" | "create" | "update" | "delete",
+  "table": "cards" | "folders" | "tags",
+  "sessionToken": "<YOUR_SESSION_TOKEN>",
+  "id": "uuid",        // for get, update, delete
+  "data": { ... },     // for create, update
+  "sortBy": "-created_date"  // for list (optional)
+}`}
+                    </pre>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="space-y-3">
+                    <div className="text-slate-300 font-medium">פעולות זמינות:</div>
+
+                    <div className="bg-slate-900/50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-mono">list</span>
+                        <span className="text-slate-300">קבלת כל הפריטים</span>
+                      </div>
+                      <pre className="text-slate-500 font-mono text-xs">
+{`{ "action": "list", "table": "cards", "sessionToken": "...", "sortBy": "-created_date" }`}
+                      </pre>
+                    </div>
+
+                    <div className="bg-slate-900/50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-mono">create</span>
+                        <span className="text-slate-300">יצירת פריט חדש</span>
+                      </div>
+                      <pre className="text-slate-500 font-mono text-xs">
+{`{ "action": "create", "table": "cards", "sessionToken": "...", "data": { "title": "כרטיסייה חדשה" } }`}
+                      </pre>
+                    </div>
+
+                    <div className="bg-slate-900/50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded text-xs font-mono">update</span>
+                        <span className="text-slate-300">עדכון פריט קיים</span>
+                      </div>
+                      <pre className="text-slate-500 font-mono text-xs">
+{`{ "action": "update", "table": "cards", "sessionToken": "...", "id": "uuid", "data": { "title": "שם חדש" } }`}
+                      </pre>
+                    </div>
+
+                    <div className="bg-slate-900/50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded text-xs font-mono">delete</span>
+                        <span className="text-slate-300">מחיקת פריט</span>
+                      </div>
+                      <pre className="text-slate-500 font-mono text-xs">
+{`{ "action": "delete", "table": "cards", "sessionToken": "...", "id": "uuid" }`}
+                      </pre>
+                    </div>
+                  </div>
+
+                  {/* Example with cURL */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="text-slate-400 mb-2">דוגמה עם cURL</div>
+                    <pre className="text-violet-400 font-mono text-xs overflow-x-auto whitespace-pre-wrap">
+{`curl -X POST \\
+  https://kauxantpdqikmepjiddu.supabase.co/functions/v1/data-api \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \\
+  -d '{
+    "action": "list",
+    "table": "cards",
+    "sessionToken": "${sessionToken?.substring(0, 20)}..."
+  }'`}
+                    </pre>
+                  </div>
+
+                  {/* Card Schema */}
+                  <div className="bg-slate-900/50 rounded-lg p-4">
+                    <div className="text-slate-400 mb-2">מבנה כרטיסייה (Card)</div>
+                    <pre className="text-pink-400 font-mono text-xs overflow-x-auto">
+{`{
+  "id": "uuid",
+  "title": "string",
+  "color": "#hex",
+  "folder_id": "uuid | null",
+  "tags": ["string"],
+  "content_blocks": [
+    { "type": "text", "content": "..." },
+    { "type": "api", "templateId": "uuid", "params": {} }
+  ],
+  "is_smart_card": boolean,
+  "is_favorite": boolean,
+  "created_date": "timestamp",
+  "updated_date": "timestamp"
+}`}
+                    </pre>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
 
