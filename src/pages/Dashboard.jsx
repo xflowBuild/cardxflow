@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Toaster, toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useAuth } from '@/lib/AuthContext';
-import { createPageUrl } from '@/utils';
 
 import CardGrid from '../components/cards/CardGrid';
 import CardModal from '../components/cards/CardModal';
@@ -340,7 +339,7 @@ export default function Dashboard() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => window.location.href = createPageUrl('Settings')}
+                    onClick={() => window.location.href = '/Settings'}
                     className="text-slate-400 hover:text-white"
                   >
                     <Settings className="w-4 h-4" />
