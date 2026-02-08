@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Settings, User, LogOut } from 'lucide-react';
+import { Menu, X, Settings, User, LogOut, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Toaster, toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -207,6 +207,26 @@ export default function Dashboard() {
         : [...prev, tagName]
     );
   };
+
+  // Show loading screen while data is loading
+  if (cardsLoading || foldersLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center" dir="rtl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/25">
+            <span className="text-2xl font-bold text-white">כ</span>
+          </div>
+          <Loader2 className="w-8 h-8 animate-spin text-violet-400 mx-auto mb-4" />
+          <p className="text-slate-200 text-lg font-medium">טוען את הכרטיסיות שלך...</p>
+          <p className="text-slate-500 text-sm mt-2">רק רגע</p>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" dir="rtl">

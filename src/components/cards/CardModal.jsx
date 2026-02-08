@@ -134,7 +134,7 @@ export default function CardModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden bg-slate-900 border-slate-700 p-0" dir="rtl">
+      <DialogContent className="w-[95vw] max-w-6xl h-[90vh] max-h-[90vh] overflow-hidden bg-slate-900 border-slate-700 p-0 flex flex-col sm:w-[95vw] sm:max-w-6xl" dir="rtl">
         {/* Header */}
         <div 
           className="p-6 border-b border-slate-700"
@@ -260,7 +260,7 @@ export default function CardModal({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 max-h-[calc(90vh-200px)]">
+        <div className="flex-1 overflow-y-auto p-6">
           {/* Smart Card Panel */}
           <AnimatePresence>
             {editedCard.is_smart_card && (
