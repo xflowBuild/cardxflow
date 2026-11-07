@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Save, Trash2, Share2, Star, Zap, Plus, 
-  GripVertical, Palette, Tag, ChevronDown 
+  GripVertical, Palette, Tag, ChevronDown, Sparkles 
 } from 'lucide-react';
+import AiPanel from '@/components/ai/AiPanel';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +41,7 @@ export default function CardModal({
   availableTags,
   apiTemplates
 }) {
+  const [showAi, setShowAi] = useState(false);
   const [editedCard, setEditedCard] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [newTag, setNewTag] = useState('');
@@ -325,6 +327,11 @@ export default function CardModal({
           </Button>
 
           <div className="flex items-center gap-2">
+            {editedCard?.id && (
+              <Button variant="ghost" size="icon" title="צ'אט AI" onClick={() => setShowAi(s => !s)} className="text-violet-300 hover:text-white">
+                <Sparkles className="w-4 h-4" />
+              </Button>
+            )}
             <Button variant="ghost" onClick={onClose} className="text-slate-400">
               ביטול
             </Button>
@@ -338,6 +345,7 @@ export default function CardModal({
             </Button>
           </div>
         </div>
+        <AiPanel cardId={editedCard?.id} open={showAi} onClose={() => setShowAi(false)} />
       </DialogContent>
     </Dialog>
   );

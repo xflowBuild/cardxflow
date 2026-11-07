@@ -6,7 +6,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import PhoneAuth from '@/components/auth/PhoneAuth';
+import EmailAuth from '@/components/auth/EmailAuth';
 import { Toaster as Sonner } from "sonner";
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -31,7 +31,7 @@ const AuthenticatedApp = () => {
 
   // Show login if not authenticated
   if (!isAuthenticated) {
-    return <PhoneAuth />;
+    return <EmailAuth />;
   }
 
   // Render the main app
