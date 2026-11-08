@@ -19,7 +19,7 @@ export const callFunction = async (slug, body) => {
 
 const api = (action, table, extra = {}) => callFunction('dataapi', { action, table, ...extra });
 const entity = (table) => ({
-  list: (sortBy) => api('list', table, { sortBy }),
+  list: async (sortBy) => { const r = await api('list', table, { sortBy }); return Array.isArray(r) ? r : (Array.isArray(r?.rows) ? r.rows : []); },
   create: (data) => api('create', table, { data }),
   update: (id, data) => api('update', table, { id, data }),
   delete: (id) => api('delete', table, { id }),
