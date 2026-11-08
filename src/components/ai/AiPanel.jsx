@@ -5,41 +5,78 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { aiClient } from '@/api/aiClient';
 
-const emptyProvider = { name: '', base_url: 'https://api.openai.com/v1', api_key: '', modelsText: 'gpt-4o-mini', is_default: false };
+const PRESETS = [
+  { key: 'openrouter', name: 'OpenRouter', base_url: 'https://openrouter.ai/api/v1', keyUrl: 'https://openrouter.ai/keys', models: ['meta-llama/llama-3.3-70b-instruct:free', 'deepseek/deepseek-chat-v3-0324:free', 'google/gemma-3-27b-it:free'] },
+  { key: 'gemini', name: 'Gemini', base_url: 'https://generativelanguage.googleapis.com/v1beta/openai/', keyUrl: 'https://aistudio.google.com/apikey', models: ['gemini-2.0-flash', 'gemini-2.0-flash-lite'] },
+  { key: 'github', name: 'GitHub Models', base_url: 'https://models.github.ai/inference', keyUrl: 'https://github.com/settings/tokens', models: ['openai/gpt-4o-mini', 'meta/Llama-3.3-70B-Instruct'] },
+  { key: 'openai', name: 'OpenAI', base_url: 'https://api.openai.com/v1', keyUrl: 'https://platform.openai.com/api-keys', models: ['gpt-4o-mini'] },
+];
 
 function ProviderSettings({ providers, onChanged }) {
-  const [form, setForm] = useState(emptyProvider);
-  const [err, setErr] = useState('');
-  const save = async () => {
-    setErr('');
+  const [keys, setKeys] = useState({});
+  const [busy, setBusy] = useState('');
+  const [msg, setMsg] = useState({});
+  const [adv, setAdv] = useState(false);
+  const [form, setForm] = useState({ name: '', base_url: '', api_key: '', modelsText: '' });
+  const findP = (pr) => providers.find(p => p.base_url === pr.base_url);
+  const save = async (pr) => {
+    const k = (keys[pr.key] || '').trim();
+    if (!k) return;
+    setBusy(pr.key); setMsg(m => ({ ...m, [pr.key]: '' }));
+    try {
+      const ex = findP(pr);
+      await aiClient.saveProvider({ id: ex?.id, name: pr.name, base_url: pr.base_url, api_key: k,
+        models: pr.models.map((id, i) => ({ id, priority: i })), is_default: ex ? ex.is_default : providers.length === 0 });
+      setKeys(s => ({ ...s, [pr.key]: '' })); setMsg(m => ({ ...m, [pr.key]: '✅ נשמר' })); onChanged();
+    } catch (e) { setMsg(m => ({ ...m, [pr.key]: '❌ ' + e.message })); } finally { setBusy(''); }
+  };
+  const saveCustom = async () => {
     try {
       const models = form.modelsText.split(',').map(s => s.trim()).filter(Boolean).map((id, i) => ({ id, priority: i }));
-      await aiClient.saveProvider({ id: form.id, name: form.name || form.base_url, base_url: form.base_url, api_key: form.api_key || undefined, models, is_default: form.is_default });
-      setForm(emptyProvider); onChanged();
-    } catch (e) { setErr(e.message); }
+      await aiClient.saveProvider({ name: form.name || form.base_url, base_url: form.base_url, api_key: form.api_key, models, is_default: providers.length === 0 });
+      setForm({ name: '', base_url: '', api_key: '', modelsText: '' }); onChanged();
+    } catch (e) { setMsg(m => ({ ...m, custom: '❌ ' + e.message })); }
   };
-  const edit = (p) => setForm({ id: p.id, name: p.name, base_url: p.base_url, api_key: '', modelsText: (p.models || []).map(m => m.id).join(', '), is_default: p.is_default });
   return (
     <div className="space-y-3 text-sm">
-      {providers.map(p => (
-        <div key={p.id} className="flex items-center justify-between bg-slate-800 rounded p-2">
-          <button className="text-right flex-1" onClick={() => edit(p)}>
-            <div className="text-white">{p.name}{p.is_default ? ' ⭐' : ''}</div>
-            <div className="text-slate-400 text-xs">{(p.models || []).map(m => m.id).join(', ')}</div>
-          </button>
-          <Button size="icon" variant="ghost" onClick={async () => { await aiClient.deleteProvider(p.id); onChanged(); }}><Trash2 className="w-4 h-4 text-red-400" /></Button>
+      <p className="text-slate-400">מדביקים מפתח ולוחצים שמור. זהו.</p>
+      {PRESETS.map(pr => {
+        const ex = findP(pr);
+        return (
+          <div key={pr.key} className="bg-slate-900 border border-slate-700 rounded-lg p-3 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-white font-medium">{pr.name} {ex && <span className="text-green-400 text-xs">● מחובר</span>}</span>
+              <div className="flex items-center gap-2">
+                <a href={pr.keyUrl} target="_blank" rel="noreferrer" className="text-violet-400 text-xs underline">השג מפתח</a>
+                {ex && <Button size="icon" variant="ghost" onClick={async () => { await aiClient.deleteProvider(ex.id); onChanged(); }}><Trash2 className="w-4 h-4 text-red-400" /></Button>}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Input dir="ltr" type="password" placeholder={ex ? 'החלפת מפתח' : 'הדבק מפתח'} value={keys[pr.key] || ''}
+                onChange={e => setKeys(s => ({ ...s, [pr.key]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && save(pr)} className="bg-slate-950 border-slate-600" />
+              <Button size="sm" disabled={busy === pr.key || !(keys[pr.key] || '').trim()} onClick={() => save(pr)}>{busy === pr.key ? '...' : 'שמור'}</Button>
+            </div>
+            {msg[pr.key] && <p className="text-xs text-slate-300">{msg[pr.key]}</p>}
+          </div>
+        );
+      })}
+      <button className="text-slate-500 text-xs underline" onClick={() => setAdv(a => !a)}>{adv ? 'הסתר' : 'ספק אחר (מתקדם)'}</button>
+      {adv && (
+        <div className="space-y-2">
+          {providers.filter(p => !PRESETS.some(pr => pr.base_url === p.base_url)).map(p => (
+            <div key={p.id} className="flex items-center justify-between bg-slate-800 rounded p-2">
+              <span className="text-white">{p.name}</span>
+              <Button size="icon" variant="ghost" onClick={async () => { await aiClient.deleteProvider(p.id); onChanged(); }}><Trash2 className="w-4 h-4 text-red-400" /></Button>
+            </div>
+          ))}
+          <Input placeholder="שם" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="bg-slate-900 border-slate-600" />
+          <Input dir="ltr" placeholder="Base URL" value={form.base_url} onChange={e => setForm({ ...form, base_url: e.target.value })} className="bg-slate-900 border-slate-600" />
+          <Input dir="ltr" type="password" placeholder="API key" value={form.api_key} onChange={e => setForm({ ...form, api_key: e.target.value })} className="bg-slate-900 border-slate-600" />
+          <Input dir="ltr" placeholder="models, comma separated" value={form.modelsText} onChange={e => setForm({ ...form, modelsText: e.target.value })} className="bg-slate-900 border-slate-600" />
+          {msg.custom && <p className="text-red-400 text-xs">{msg.custom}</p>}
+          <Button size="sm" onClick={saveCustom}><Plus className="w-4 h-4 ml-1" />שמור</Button>
         </div>
-      ))}
-      <div className="space-y-2 border-t border-slate-700 pt-3">
-        <div className="text-slate-300">{form.id ? 'עריכת ספק' : 'ספק חדש'}</div>
-        <Input placeholder="שם (למשל OpenAI)" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="bg-slate-900 border-slate-600" />
-        <Input dir="ltr" placeholder="Base URL" value={form.base_url} onChange={e => setForm({ ...form, base_url: e.target.value })} className="bg-slate-900 border-slate-600" />
-        <Input dir="ltr" type="password" placeholder={form.id ? 'API key (ריק = ללא שינוי)' : 'API key'} value={form.api_key} onChange={e => setForm({ ...form, api_key: e.target.value })} className="bg-slate-900 border-slate-600" />
-        <Input dir="ltr" placeholder="models, by priority" value={form.modelsText} onChange={e => setForm({ ...form, modelsText: e.target.value })} className="bg-slate-900 border-slate-600" />
-        <label className="flex items-center gap-2 text-slate-300"><input type="checkbox" checked={form.is_default} onChange={e => setForm({ ...form, is_default: e.target.checked })} /> ברירת מחדל</label>
-        {err && <p className="text-red-400">{err}</p>}
-        <Button size="sm" onClick={save}><Plus className="w-4 h-4 ml-1" />שמור</Button>
-      </div>
+      )}
     </div>
   );
 }
