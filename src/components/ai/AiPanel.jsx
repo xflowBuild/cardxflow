@@ -7,7 +7,7 @@ import { aiClient } from '@/api/aiClient';
 
 const PRESETS = [
   { key: 'openrouter', name: 'OpenRouter', base_url: 'https://openrouter.ai/api/v1', keyUrl: 'https://openrouter.ai/keys', models: ['meta-llama/llama-3.3-70b-instruct:free', 'deepseek/deepseek-chat-v3-0324:free', 'google/gemma-3-27b-it:free'] },
-  { key: 'gemini', name: 'Gemini', base_url: 'https://generativelanguage.googleapis.com/v1beta/openai/', keyUrl: 'https://aistudio.google.com/apikey', models: ['gemini-2.5-flash', 'gemini-2.5-flash-lite'] },
+  { key: 'gemini', name: 'Gemini', base_url: 'https://generativelanguage.googleapis.com/v1beta/openai/', keyUrl: 'https://aistudio.google.com/apikey', models: ['gemini-3.5-flash', 'gemini-3.5-flash-lite'] },
   { key: 'github', name: 'GitHub Models', base_url: 'https://models.github.ai/inference', keyUrl: 'https://github.com/settings/tokens', models: ['openai/gpt-4o-mini', 'meta/Llama-3.3-70B-Instruct'] },
   { key: 'openai', name: 'OpenAI', base_url: 'https://api.openai.com/v1', keyUrl: 'https://platform.openai.com/api-keys', models: ['gpt-4o-mini'] },
 ];
