@@ -58,9 +58,11 @@ async function callModel(p: any, model: string, messages: any[]) {
       ...(p.api_key_encrypted ? { Authorization: `Bearer ${dec(p.api_key_encrypted)}` } : {}) },
     body: JSON.stringify({ model, messages }),
   });
-  const j: any = await r.json().catch(() => ({}));
+  const raw = await r.text();
+  let j: any = {}; try { j = JSON.parse(raw); } catch {}
+  if (Array.isArray(j)) j = j[0] || {};
   const text = j?.choices?.[0]?.message?.content;
-  if (!r.ok || !text) throw new Error(j?.error?.message || `HTTP ${r.status}`);
+  if (!r.ok || !text) throw new Error(j?.error?.message || `HTTP ${r.status} ${raw.slice(0, 200)}`);
   return { text: String(text), tokens: j?.usage?.total_tokens ?? null };
 }
 
