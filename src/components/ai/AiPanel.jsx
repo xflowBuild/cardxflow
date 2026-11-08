@@ -92,8 +92,18 @@ export default function AiPanel({ cardId, open, onClose }) {
   const endRef = useRef(null);
 
   const loadProviders = async () => {
-    const list = await aiClient.listProviders();
+    let list = await aiClient.listProviders();
+    // Auto-sync preset providers to the current model list (keeps the saved key)
+    const stale = list.filter(p => { const pr = PRESETS.find(x => x.base_url === p.base_url);
+      return pr && JSON.stringify((p.models || []).map(m => m.id)) !== JSON.stringify(pr.models); });
+    if (stale.length) {
+      await Promise.all(stale.map(p => { const pr = PRESETS.find(x => x.base_url === p.base_url);
+        return aiClient.saveProvider({ id: p.id, name: p.name, base_url: p.base_url, is_default: p.is_default,
+          models: pr.models.map((id, i) => ({ id, priority: i })) }); }));
+      list = await aiClient.listProviders();
+    }
     setProviders(list);
+    setChoice(c => c && !list.some(p => (p.models || []).some(m => `${p.id}|${m.id}` === c)) ? '' : c);
     if (!list.length) setShowSettings(true);
   };
 
