@@ -1,9 +1,10 @@
 // Hidden per-card AI chat. Any OpenAI-compatible provider. Keys stay server-side (AES-GCM).
 // If a model fails, the next one is tried automatically.
 import { sql, json, cors, fail, requireApprovedUser } from './_auth';
-import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
+import { createCipheriv, createDecipheriv, randomBytes, createHash } from 'node:crypto';
 
-const KEY = Buffer.from(process.env.AI_KEYS_SECRET!, 'base64'); // 32 bytes, base64
+// Key derived server-side: AI_KEYS_SECRET if set, otherwise DATABASE_URL (never leaves the server).
+const KEY = createHash('sha256').update(process.env.AI_KEYS_SECRET || process.env.DATABASE_URL || 'cardxflow').digest();
 const enc = (s: string) => { const iv = randomBytes(12); const c = createCipheriv('aes-256-gcm', KEY, iv);
   const d = Buffer.concat([c.update(s, 'utf8'), c.final()]);
   return [iv, c.getAuthTag(), d].map(b => b.toString('base64')).join('.'); };
